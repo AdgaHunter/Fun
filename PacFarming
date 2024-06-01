@@ -1,0 +1,31 @@
+function setUp() internal returns (bool) {
+        LibDiamond.DiamondStorage storage ds = MarketSlot();
+        ds.priceFeedPAC = AggregatorV3Interface(
+            0x5ffd9EbD27f2fcAB044c0f0a26A45Cb62fa29c06
+        );
+        return true;
+}
+function _PurchaseViaPAC(uint _ItemId) internal {
+        LibDiamond.DiamondStorage storage ds = MarketSlot();
+        if (ds.isCorrectId[_ItemId] == false) revert("INVALID ITEM ID");
+        (
+            bool isBougth,
+            address seller,
+            uint256 price,
+            ,
+            ,
+            address NftAddress,
+            uint256 NftId
+        ) = fetchItemDetails(_ItemId);
+}
+function getTokenLatestPrice(
+        AggregatorV3Interface _pricefeed
+    ) internal view returns (int) {
+        (
+            ,
+            /* uint80 roundID */ int price /*uint startedAt*/ /*uint timeStamp*/ /*uint80 answeredInRound*/,
+            ,
+            ,
+        ) = _pricefeed.latestRoundData();
+        return (price / 1e8);
+}
